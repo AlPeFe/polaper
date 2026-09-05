@@ -124,6 +124,13 @@ class BrowseSourceViewModel(
      * Flow of Pager flow tied to [State.listing]
      */
     private val hideInLibraryItems = sourcePreferences.hideInLibraryItems.get()
+
+    /**
+     * Cache of chapter-count lookups per manga id, so the per-item query only runs
+     * once per unique manga per screen session instead of on every paging recomposition.
+     */
+    private val hasNoChaptersCache = mutableMapOf<Long, Boolean>()
+
     val mangaPagerFlowFlow = state.map { it.source to it.listing }
         .filter { (source, _) -> source != null }
         .map { (_, listing) -> listing }
@@ -136,9 +143,16 @@ class BrowseSourceViewModel(
                     getManga.subscribe(manga.url, manga.source)
                         .map { dbManga ->
                             val resolved = dbManga ?: manga
+                            val hasNoChapters = if (dbManga != null) {
+                                hasNoChaptersCache[dbManga.id]
+                                    ?: getChaptersByMangaId.await(dbManga.id).isEmpty()
+                                        .also { hasNoChaptersCache[dbManga.id] = it }
+                            } else {
+                                false
+                            }
                             BrowseMangaItem(
                                 manga = resolved,
-                                hasNoChapters = dbManga != null && getChaptersByMangaId.await(dbManga.id).isEmpty(),
+                                hasNoChapters = hasNoChapters,
                             )
                         }
                         .stateIn(viewModelScope)
