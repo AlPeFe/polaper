@@ -205,7 +205,6 @@ open class WebGpuViewer(
                                 page.imagePage.invalidate()
                             } else {
                                 if (pageInCache(page)) page.state = PageState.IDLE
-                                imagePage.cleanup()
                             }
                         }
                     }
@@ -1154,6 +1153,7 @@ open class WebGpuViewer(
                     pager.state.invalidate()
                 } else {
                     if (pageInCache(page)) page.state = PageState.IDLE
+                    imagePage.cleanup()
                 }
             }
         }
