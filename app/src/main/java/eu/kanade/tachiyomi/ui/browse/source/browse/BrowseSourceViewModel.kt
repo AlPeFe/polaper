@@ -50,6 +50,7 @@ import tachiyomi.domain.chapter.interactor.SetMangaDefaultChapterFlags
 import tachiyomi.domain.library.service.LibraryPreferences
 import tachiyomi.domain.manga.interactor.GetDuplicateLibraryManga
 import tachiyomi.domain.manga.interactor.GetManga
+import tachiyomi.domain.chapter.interactor.GetChaptersByMangaId
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.MangaWithChapterCount
 import tachiyomi.domain.manga.model.toMangaUpdate
@@ -72,6 +73,7 @@ class BrowseSourceViewModel(
     private val setMangaCategories: SetMangaCategories,
     private val setMangaDefaultChapterFlags: SetMangaDefaultChapterFlags,
     private val getManga: GetManga,
+    private val getChaptersByMangaId: GetChaptersByMangaId,
     private val updateManga: UpdateManga,
     private val addTracks: AddTracks,
     getIncognitoState: GetIncognitoState,
@@ -132,10 +134,16 @@ class BrowseSourceViewModel(
             }.flow.map { pagingData ->
                 pagingData.map { manga ->
                     getManga.subscribe(manga.url, manga.source)
-                        .map { it ?: manga }
+                        .map { dbManga ->
+                            val resolved = dbManga ?: manga
+                            BrowseMangaItem(
+                                manga = resolved,
+                                hasNoChapters = dbManga != null && getChaptersByMangaId.await(dbManga.id).isEmpty(),
+                            )
+                        }
                         .stateIn(viewModelScope)
                 }
-                    .filter { !hideInLibraryItems || !it.value.favorite }
+                    .filter { !hideInLibraryItems || !it.value.manga.favorite }
             }
                 .cachedIn(viewModelScope)
         }
@@ -369,3 +377,14 @@ class BrowseSourceViewModel(
         val isUserQuery get() = listing is Listing.Search && !listing.query.isNullOrEmpty()
     }
 }
+
+/**
+ * Item of a browse source grid/list: the resolved manga plus whether it is known locally
+ * to have zero chapters (only known for manga already in the local DB; unknown for
+ * brand-new search results, which show no indicator until fetched once).
+ */
+@Immutable
+data class BrowseMangaItem(
+    val manga: Manga,
+    val hasNoChapters: Boolean,
+)

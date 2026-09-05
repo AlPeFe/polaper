@@ -13,6 +13,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import eu.kanade.presentation.library.components.CommonMangaItemDefaults
 import eu.kanade.presentation.library.components.MangaComfortableGridItem
+import eu.kanade.tachiyomi.ui.browse.source.browse.BrowseMangaItem
 import kotlinx.coroutines.flow.StateFlow
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.MangaCover
@@ -20,7 +21,7 @@ import tachiyomi.presentation.core.util.plus
 
 @Composable
 fun BrowseSourceComfortableGrid(
-    mangaList: LazyPagingItems<StateFlow<Manga>>,
+    mangaList: LazyPagingItems<StateFlow<BrowseMangaItem>>,
     columns: GridCells,
     contentPadding: PaddingValues,
     onMangaClick: (Manga) -> Unit,
@@ -39,9 +40,10 @@ fun BrowseSourceComfortableGrid(
         }
 
         items(count = mangaList.itemCount) { index ->
-            val manga by mangaList[index]?.collectAsState() ?: return@items
+            val item by mangaList[index]?.collectAsState() ?: return@items
+            val manga = item.manga
             BrowseSourceComfortableGridItem(
-                manga = manga,
+                mangaItem = item,
                 onClick = { onMangaClick(manga) },
                 onLongClick = { onMangaLongClick(manga) },
             )
@@ -57,10 +59,11 @@ fun BrowseSourceComfortableGrid(
 
 @Composable
 private fun BrowseSourceComfortableGridItem(
-    manga: Manga,
+    mangaItem: BrowseMangaItem,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = onClick,
 ) {
+    val manga = mangaItem.manga
     MangaComfortableGridItem(
         title = manga.title,
         coverData = MangaCover(
@@ -73,6 +76,9 @@ private fun BrowseSourceComfortableGridItem(
         coverAlpha = if (manga.favorite) CommonMangaItemDefaults.BrowseFavoriteCoverAlpha else 1f,
         coverBadgeStart = {
             InLibraryBadge(enabled = manga.favorite)
+        },
+        coverBadgeBottomEnd = {
+            NoChaptersBadge(enabled = mangaItem.hasNoChapters)
         },
         onLongClick = onLongClick,
         onClick = onClick,
