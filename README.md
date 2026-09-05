@@ -1,20 +1,16 @@
 <div align="center">
 
-<a href="https://mihon.app">
-    <img src="./.github/assets/logo.png" alt="Mihon logo" title="Mihon logo" width="80"/>
+<a href="https://github.com/AlPeFe/polaper">
+    <img src="./.github/assets/logo.png" alt="Polaper logo" title="Polaper logo" width="80"/>
 </a>
 
-# Mihon [App](#)
+# Polaper
 
-### Full-featured reader
-Discover and read manga, webtoons, comics, and more – easier than ever on your Android device.
+### Fork personal de [Mihon](https://github.com/mihonapp/mihon) con branding propio
 
-[![Discord server](https://img.shields.io/discord/1195734228319617024.svg?label=&labelColor=6A7EC2&color=7389D8&logo=discord&logoColor=FFFFFF)](https://discord.gg/mihon)
-[![GitHub downloads](https://img.shields.io/github/downloads/mihonapp/mihon/total?label=downloads&labelColor=27303D&color=0D1117&logo=github&logoColor=FFFFFF&style=flat)](https://mihon.app/download)
+Lector de manga open source para Android. Este fork no publica releases; las extensiones se cargan igual que en Mihon (Ajustes → Examinar → Repositorios de extensiones).
 
-[![CI](https://img.shields.io/github/actions/workflow/status/mihonapp/mihon/build.yml?labelColor=27303D)](https://github.com/mihonapp/mihon/actions/workflows/build_push.yml)
-[![License: Apache-2.0](https://img.shields.io/github/license/mihonapp/mihon?labelColor=27303D&color=0877d2)](/LICENSE)
-[![Translation status](https://img.shields.io/weblate/progress/mihon?labelColor=27303D&color=946300)](https://hosted.weblate.org/engage/mihon/)
+[![License: Apache-2.0](https://img.shields.io/github/license/AlPeFe/polaper?labelColor=27303D&color=0877d2)](/LICENSE)
 
 ## Download
 
