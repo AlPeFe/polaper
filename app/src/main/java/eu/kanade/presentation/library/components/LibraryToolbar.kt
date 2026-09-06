@@ -1,7 +1,12 @@
 package eu.kanade.presentation.library.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,7 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.kanade.presentation.components.AppBar
 import eu.kanade.presentation.components.AppBarActions
@@ -36,6 +44,8 @@ fun LibraryToolbar(
     onClickRefresh: () -> Unit,
     onClickGlobalUpdate: () -> Unit,
     onClickOpenRandomManga: () -> Unit,
+    missingSourceCount: Int,
+    onClickMissingSource: () -> Unit,
     searchQuery: String?,
     onSearchQueryChange: (String?) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior?,
@@ -55,6 +65,8 @@ fun LibraryToolbar(
         onClickRefresh = onClickRefresh,
         onClickGlobalUpdate = onClickGlobalUpdate,
         onClickOpenRandomManga = onClickOpenRandomManga,
+        missingSourceCount = missingSourceCount,
+        onClickMissingSource = onClickMissingSource,
         scrollBehavior = scrollBehavior,
     )
 }
@@ -69,6 +81,8 @@ private fun LibraryRegularToolbar(
     onClickRefresh: () -> Unit,
     onClickGlobalUpdate: () -> Unit,
     onClickOpenRandomManga: () -> Unit,
+    missingSourceCount: Int,
+    onClickMissingSource: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior?,
 ) {
     val pillAlpha = if (isSystemInDarkTheme()) 0.12f else 0.08f
@@ -81,6 +95,12 @@ private fun LibraryRegularToolbar(
                     modifier = Modifier.weight(1f, false),
                     overflow = TextOverflow.Ellipsis,
                 )
+                if (missingSourceCount > 0) {
+                    MissingSourceBadge(
+                        count = missingSourceCount,
+                        onClick = onClickMissingSource,
+                    )
+                }
                 if (title.numberOfManga != null) {
                     Pill(
                         text = "${title.numberOfManga}",
@@ -156,3 +176,32 @@ data class LibraryToolbarTitle(
     val text: String,
     val numberOfManga: Int? = null,
 )
+
+/**
+ * Small circular red badge shown next to the library title with the number of manga
+ * that have no source installed. Clicking it toggles the "missing source" library filter.
+ */
+@Composable
+private fun MissingSourceBadge(
+    count: Int,
+    onClick: () -> Unit,
+) {
+    val containerColor = MaterialTheme.colorScheme.error
+    val contentColor = MaterialTheme.colorScheme.onError
+    Box(
+        modifier = Modifier
+            .padding(start = 8.dp)
+            .clip(CircleShape)
+            .background(containerColor)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 6.dp, vertical = 2.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = "$count",
+            color = contentColor,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}

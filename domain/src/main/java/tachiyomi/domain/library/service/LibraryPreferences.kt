@@ -95,6 +95,11 @@ class LibraryPreferences(
         TriState.DISABLED,
     )
 
+    val filterSourceMissing: Preference<TriState> = preferenceStore.getEnum(
+        "pref_filter_library_source_missing_v2",
+        TriState.DISABLED,
+    )
+
     val filterIntervalCustom: Preference<TriState> = preferenceStore.getEnum(
         "pref_filter_library_interval_custom",
         TriState.DISABLED,

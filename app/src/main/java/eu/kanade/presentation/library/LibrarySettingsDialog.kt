@@ -115,6 +115,12 @@ private fun ColumnScope.FilterPage(
         state = filterCompleted,
         onClick = { viewModel.toggleFilter(LibraryPreferences::filterCompleted) },
     )
+    val filterSourceMissing by viewModel.libraryPreferences.filterSourceMissing.collectAsState()
+    TriStateItem(
+        label = stringResource(MR.strings.label_source_missing),
+        state = filterSourceMissing,
+        onClick = { viewModel.toggleFilter(LibraryPreferences::filterSourceMissing) },
+    )
     // TODO: re-enable when custom intervals are ready for stable
     if ((!isReleaseBuildType) && LibraryPreferences.MANGA_OUTSIDE_RELEASE_PERIOD in autoUpdateMangaRestrictions) {
         val filterIntervalCustom by viewModel.libraryPreferences.filterIntervalCustom.collectAsState()

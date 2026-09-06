@@ -46,7 +46,9 @@ import mihon.core.common.utils.mutate
 import mihon.domain.library.model.search.QueryNode
 import mihon.feature.library.matches
 import tachiyomi.core.common.preference.CheckboxState
+import tachiyomi.core.common.preference.Preference
 import tachiyomi.core.common.preference.TriState
+import tachiyomi.core.common.preference.getAndSet
 import tachiyomi.core.common.util.lang.compareToWithCollator
 import tachiyomi.core.common.util.lang.launchIO
 import tachiyomi.core.common.util.lang.launchNonCancellable
@@ -121,6 +123,7 @@ class LibraryViewModel(
             prefs.filterBookmarked,
             prefs.filterCompleted,
             prefs.filterIntervalCustom,
+            prefs.filterSourceMissing,
             *trackFilters.values.toTypedArray(),
         )
             .any { it != TriState.DISABLED }
@@ -184,6 +187,7 @@ class LibraryViewModel(
             showMangaContinueButton = display.showMangaContinueButton,
             dialog = dialog,
             libraryData = library?.data ?: LibraryData(),
+            missingSourceCount = library?.data?.missingSourceCount ?: 0,
             activeCategoryIndex = activeCategoryIndex,
             groupedFavorites = library?.groupedFavorites.orEmpty(),
         )
@@ -214,6 +218,7 @@ class LibraryViewModel(
         val filterBookmarked = preferences.filterBookmarked
         val filterCompleted = preferences.filterCompleted
         val filterIntervalCustom = preferences.filterIntervalCustom
+        val filterSourceMissing = preferences.filterSourceMissing
 
         val isNotLoggedInAnyTrack = trackingFilter.isEmpty()
 
@@ -249,6 +254,10 @@ class LibraryViewModel(
             }
         }
 
+        val filterFnSourceMissing: (LibraryItem) -> Boolean = {
+            applyFilter(filterSourceMissing) { it.sourceMissing }
+        }
+
         val filterFnTracking: (LibraryItem) -> Boolean = tracking@{ item ->
             if (isNotLoggedInAnyTrack || trackFiltersIsIgnored) return@tracking true
 
@@ -267,6 +276,7 @@ class LibraryViewModel(
                 filterFnBookmarked(it) &&
                 filterFnCompleted(it) &&
                 filterFnIntervalCustom(it) &&
+                filterFnSourceMissing(it) &&
                 filterFnTracking(it)
         }
     }
@@ -381,6 +391,7 @@ class LibraryViewModel(
             libraryPreferences.filterBookmarked.changes(),
             libraryPreferences.filterCompleted.changes(),
             libraryPreferences.filterIntervalCustom.changes(),
+            libraryPreferences.filterSourceMissing.changes(),
         ) {
             ItemPreferences(
                 downloadBadge = it[0] as Boolean,
@@ -395,6 +406,7 @@ class LibraryViewModel(
                 filterBookmarked = it[9] as TriState,
                 filterCompleted = it[10] as TriState,
                 filterIntervalCustom = it[11] as TriState,
+                filterSourceMissing = it[12] as TriState,
             )
         }
     }
@@ -413,6 +425,7 @@ class LibraryViewModel(
                     isLocal = manga.manga.isLocal(),
                     sourceName = sourceManager.getOrStub(manga.manga.source).name.lowercase(),
                     sourceLanguage = sourceManager.getOrStub(manga.manga.source).lang,
+                    sourceMissing = sourceManager.get(manga.manga.source) == null,
                     badges = LibraryItem.Badges(
                         downloadCount = if (preferences.downloadBadge) {
                             downloadManager.getDownloadCount(manga.manga)
@@ -629,6 +642,12 @@ class LibraryViewModel(
         dialog.update { Dialog.SettingsSheet }
     }
 
+    fun toggleFilter(preference: (LibraryPreferences) -> Preference<TriState>) {
+        preference(libraryPreferences).getAndSet {
+            it.next()
+        }
+    }
+
     private var lastSelectionCategory: Long? = null
 
     /**
@@ -780,6 +799,7 @@ class LibraryViewModel(
         val filterBookmarked: TriState,
         val filterCompleted: TriState,
         val filterIntervalCustom: TriState,
+        val filterSourceMissing: TriState,
     )
 
     @Immutable
@@ -792,6 +812,7 @@ class LibraryViewModel(
         val loggedInTrackerIds: Set<Long> = emptySet(),
     ) {
         val favoritesById by lazy { favorites.associateBy { it.id } }
+        val missingSourceCount: Int = favorites.count { it.sourceMissing }
     }
 
     @Immutable
@@ -806,6 +827,7 @@ class LibraryViewModel(
         val showMangaContinueButton: Boolean = false,
         val dialog: Dialog? = null,
         val libraryData: LibraryData = LibraryData(),
+        val missingSourceCount: Int = 0,
         private val activeCategoryIndex: Int = 0,
         private val groupedFavorites: Map<Category, List</* LibraryItem */ Long>> = emptyMap(),
     ) {
