@@ -33,8 +33,8 @@ android {
     defaultConfig {
         applicationId = "app.polaper"
 
-        versionCode = 100
-        versionName = "0.1.3"
+        versionCode = 107
+        versionName = "0.1.7"
 
         buildConfigField("String", "COMMIT_COUNT", "\"${getLatestCommitCount()}\"")
         buildConfigField("String", "COMMIT_SHA", "\"${getLatestCommitSha()}\"")
