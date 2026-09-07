@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="256dp"
+    android:height="256dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+  <!-- Polaper logo: P abstracta (barra azul + anillo rosa + punto ambar) sobre fondo crema redondeado -->
+  <path
+      android:pathData="M44,0L212,0A44,44 0 0 1 256,44L256,212A44,44 0 0 1 212,256L44,256A44,44 0 0 1 0,212L0,44A44,44 0 0 1 44,0Z"
+      android:fillColor="#F9F4EA"/>
+  <!-- circulo suave esquina sup-izq -->
+  <path
+      android:pathData="M38,38m-22,0a22,22 0 1,0 44,0a22,22 0 1,0 -44,0"
+      android:fillColor="#F6DCE4"/>
+  <!-- circulo suave esquina inf-der -->
+  <path
+      android:pathData="M218,218m-30,0a30,30 0 1,0 60,0a30,30 0 1,0 -60,0"
+      android:fillColor="#D9E9F7"/>
+  <!-- barra vertical (asta de la P) -->
+  <path
+      android:pathData="M104,60L124,60A10,10 0 0 1 134,70L134,186A10,10 0 0 1 124,196L104,196A10,10 0 0 1 94,186L94,70A10,10 0 0 1 104,60Z"
+      android:fillColor="#84B6DD"/>
+  <!-- anillo rosa (bucle de la P) -->
+  <path
+      android:pathData="M158,92m-38,0a38,38 0 1,0 76,0a38,38 0 1,0 -76,0"
+      android:fillColor="#EE8FA6"/>
+  <path
+      android:pathData="M158,92m-27,0a27,27 0 1,0 54,0a27,27 0 1,0 -54,0"
+      android:fillColor="#F9F4EA"/>
+  <!-- punto ambar interior -->
+  <path
+      android:pathData="M158,92m-10,0a10,10 0 1,0 20,0a10,10 0 1,0 -20,0"
+      android:fillColor="#F2C078"/>
+</vector>
