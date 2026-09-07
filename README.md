@@ -1,66 +1,58 @@
 <div align="center">
 
-<a href="https://github.com/AlPeFe/polaper">
-    <img src="./.github/assets/logo.png" alt="Polaper logo" title="Polaper logo" width="80"/>
-</a>
+<img src="./.github/assets/logo.png" alt="Polaper logo" title="Polaper logo" width="140"/>
 
 # Polaper
 
-### Fork personal de [Mihon](https://github.com/mihonapp/mihon) con branding propio
+### Lector de manga para Android — fork personal de [Mihon](https://github.com/mihonapp/mihon)
 
-Lector de manga open source para Android. Este fork no publica releases; las extensiones se cargan igual que en Mihon (Ajustes → Examinar → Repositorios de extensiones).
+Lector de manga, webtoons y cómics, libre y open source (Apache-2.0), con branding y funciones propias. Uso personal.
 
 [![License: Apache-2.0](https://img.shields.io/github/license/AlPeFe/polaper?labelColor=27303D&color=0877d2)](/LICENSE)
 
-## Download
-
-[![Mihon Stable](https://img.shields.io/github/release/mihonapp/mihon.svg?maxAge=3600&label=Stable&labelColor=06599d&color=043b69)](https://mihon.app/download)
-[![Mihon Beta](https://img.shields.io/github/v/release/mihonapp/mihon-preview.svg?maxAge=3600&label=Beta&labelColor=2c2c47&color=1c1c39)](https://mihon.app/download)
-
-*Requires Android 8.0 or higher.*
-
-## Features
-
-<div align="left">
-
-* Local reading of content.
-* A configurable reader with multiple viewers, reading directions and other settings.
-* Tracker support: [MangaBaka](https://mangabaka.org), [MyAnimeList](https://myanimelist.net/), [AniList](https://anilist.co/), [Kitsu](https://kitsu.app/), [MangaUpdates](https://mangaupdates.com), [Shikimori](https://shikimori.one), [Bangumi](https://bgm.tv/), and [Hikka](https://hikka.io/) support.
-* Categories to organize your library.
-* Light and dark themes.
-* Schedule updating your library for new chapters.
-* Create backups locally to read offline or to your desired cloud service.
-* Plus much more...
-
 </div>
 
-## Contributing
+## ✨ Funciones propias de este fork
 
-[Code of conduct](./CODE_OF_CONDUCT.md) · [Contributing guide](./CONTRIBUTING.md)
+- **Indicador de mangas sin capítulos**: un punto rojo en la portada (esquina inferior derecha) marca los mangos que ya conoces y tienen 0 capítulos, en los 3 modos de vista de Explorar.
+- **Filtro y aviso "Missing source"**: en la biblioteca, un badge circular junto al título muestra cuántos mangos han perdido su extensión/fuente; púlsalo (o usa el filtro en Ajustes) para verlos.
+- **Búsqueda sin anclados**: la búsqueda global usa siempre todas las fuentes activas (eliminado el selector "Anclados" por defecto).
+- **Auto-actualización contra este repo**: la app comprueba las releases de `AlPeFe/polaper` (Ajustes → Acerca de → Buscar actualizaciones).
+- **Branding propio**: nombre, icono y splash sin marca de Mihon.
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+## 📥 Descargar / actualizar
 
-Before reporting a new issue, take a look at the [FAQ](https://mihon.app/docs/faq/general), the [changelog](https://mihon.app/changelogs/) and the already opened [issues](https://github.com/mihonapp/mihon/issues); if you got any questions, join our [Discord server](https://discord.gg/mihon).
+Las releases están en la página de [Releases](https://github.com/AlPeFe/polaper/releases) (APK firmados de debug, para uso personal).
 
+La app (v0.1.3+) se auto-actualiza desde este mismo repositorio.
 
-### Repositories
+## 🚀 Compilar
 
-[![mihonapp/website - GitHub](https://github-stats-extended.vercel.app/api/pin/?username=mihonapp&repo=website&bg_color=161B22&text_color=c9d1d9&title_color=0877d2&icon_color=0877d2&border_radius=8&hide_border=true&description_lines_count=2)](https://github.com/mihonapp/website/)
-[![mihonapp/bitmap.kt - GitHub](https://github-stats-extended.vercel.app/api/pin/?username=mihonapp&repo=bitmap.kt&bg_color=161B22&text_color=c9d1d9&title_color=0877d2&icon_color=0877d2&border_radius=8&hide_border=true&description_lines_count=2)](https://github.com/mihonapp/bitmap.kt/)
+Requiere JDK 21+ y Android SDK.
 
-### Credits
+```bash
+./gradlew :app:assembleDebug -Penable-updater
+```
 
-Thank you to all the people who have contributed!
+El APK queda en `app/build/outputs/apk/debug/`.
 
-<a href="https://github.com/mihonapp/mihon/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=mihonapp/mihon" alt="Mihon app contributors" title="Mihon app contributors" width="800"/>
-</a>
+## 🔌 Extensiones
 
-### Disclaimer
+Las extensiones se cargan desde un repositorio de extensiones dentro de la app (Ajustes → Examinar → Repositorios de extensiones), p. ej. [keiyoushi/extensions](https://github.com/keiyoushi/extensions). Se actualizan de forma independiente a la app.
 
-The developer(s) of this application does not have any affiliation with the content providers available, and this application hosts zero content.
+## 🛠️ Características (heredadas de Mihon)
 
-### License
+- Lector configurable: múltiples visores, direcciones de lectura y más ajustes.
+- Seguimiento (tracking) con MangaBaka, MyAnimeList, AniList, Kitsu, MangaUpdates, Shikimori, Bangumi y Hikka.
+- Categorías para organizar tu biblioteca.
+- Temas claro y oscuro.
+- Actualización programada de la biblioteca.
+- Copias de seguridad locales o a la nube.
+- Y mucho más.
+
+## 📚 Créditos y licencia
+
+Este proyecto es un **fork de [Mihon](https://github.com/mihonapp/mihon)** (heredero de Tachiyomi). Todo el mérito del lector original es de sus autores y colaboradores.
 
 <pre>
 Copyright © 2015 Javier Tomás
@@ -79,4 +71,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </pre>
 
-</div>
+### Disclaimer
+
+Esta aplicación no tiene ninguna afiliación con los proveedores de contenido disponibles y no aloja contenido propio.
