@@ -39,9 +39,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,6 +61,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.util.Consumer
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -315,25 +320,46 @@ class MainActivity : BaseActivity() {
     private fun CheckForUpdates() {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
+        var lastCheckedAt by remember { mutableLongStateOf(0L) }
 
-        // App updates
+        suspend fun performCheck() {
+            if (!updaterEnabled) return
+            // Cooldown so switching apps doesn't hammer the GitHub API (60 req/h unauthenticated)
+            val now = System.currentTimeMillis()
+            if (now - lastCheckedAt < UPDATE_CHECK_COOLDOWN_MS) return
+            lastCheckedAt = now
+            try {
+                val result = context.appGraph.updateChecker.checkForUpdate()
+                if (result is GetApplicationRelease.Result.NewUpdate) {
+                    val updateScreen = NewUpdateScreen(
+                        versionName = result.release.version,
+                        changelogInfo = result.release.info,
+                        releaseLink = result.release.releaseLink,
+                        downloadLink = result.release.downloadLink,
+                    )
+                    navigator.push(updateScreen)
+                }
+            } catch (e: Exception) {
+                logcat(LogPriority.ERROR, e)
+            }
+        }
+
+        // Check on app start...
         LaunchedEffect(Unit) {
-            if (updaterEnabled) {
-                try {
-                    val result = context.appGraph.updateChecker.checkForUpdate()
-                    if (result is GetApplicationRelease.Result.NewUpdate) {
-                        val updateScreen = NewUpdateScreen(
-                            versionName = result.release.version,
-                            changelogInfo = result.release.info,
-                            releaseLink = result.release.releaseLink,
-                            downloadLink = result.release.downloadLink,
-                        )
-                        navigator.push(updateScreen)
-                    }
-                } catch (e: Exception) {
-                    logcat(LogPriority.ERROR, e)
+            performCheck()
+        }
+
+        // ...and every time the app comes back to the foreground, so new releases
+        // are caught without having to cold-start the app.
+        val lifecycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    lifecycleOwner.lifecycleScope.launch { performCheck() }
                 }
             }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
         }
 
         // Extensions updates
@@ -614,3 +640,4 @@ class MainActivity : BaseActivity() {
 private const val SPLASH_MIN_DURATION = 500 // ms
 private const val SPLASH_MAX_DURATION = 5000 // ms
 private const val SPLASH_EXIT_ANIM_DURATION = 400L // ms
+private const val UPDATE_CHECK_COOLDOWN_MS = 10 * 60 * 1000L // 10 min between GitHub API checks
