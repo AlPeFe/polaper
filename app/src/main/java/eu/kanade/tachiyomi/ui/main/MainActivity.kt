@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -39,11 +40,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -62,9 +61,8 @@ import androidx.core.util.Consumer
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
@@ -77,6 +75,7 @@ import eu.kanade.presentation.components.AppStateBanners
 import eu.kanade.presentation.components.DownloadedOnlyBannerBackgroundColor
 import eu.kanade.presentation.components.IncognitoModeBannerBackgroundColor
 import eu.kanade.presentation.components.IndexingBannerBackgroundColor
+import eu.kanade.presentation.more.AppMigratingScreen
 import eu.kanade.presentation.more.settings.screen.browse.ExtensionStoresScreen
 import eu.kanade.presentation.more.settings.screen.data.RestoreBackupScreen
 import eu.kanade.presentation.util.AssistContentScreen
@@ -84,7 +83,7 @@ import eu.kanade.presentation.util.DefaultNavigatorScreenTransition
 import eu.kanade.tachiyomi.data.cache.ChapterCache
 import eu.kanade.tachiyomi.data.download.DownloadCache
 import eu.kanade.tachiyomi.data.notification.NotificationReceiver
-import eu.kanade.tachiyomi.extension.api.ExtensionApi
+import eu.kanade.tachiyomi.extension.ExtensionManager
 import eu.kanade.tachiyomi.ui.base.activity.BaseActivity
 import eu.kanade.tachiyomi.ui.browse.source.browse.BrowseSourceScreen
 import eu.kanade.tachiyomi.ui.browse.source.globalsearch.GlobalSearchScreen
@@ -99,7 +98,11 @@ import eu.kanade.tachiyomi.util.system.isBenchmarkBuildType
 import eu.kanade.tachiyomi.util.system.isNavigationBarNeedsScrim
 import eu.kanade.tachiyomi.util.system.updaterEnabled
 import eu.kanade.tachiyomi.util.view.setComposeContent
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
@@ -112,12 +115,12 @@ import mihon.app.di.AppGraph
 import mihon.app.di.appGraph
 import mihon.core.metro.metroGraph
 import mihon.core.migration.Migrator
+import mihon.domain.database.repository.DatabaseRepository
 import mihon.feature.support.SupportUsScreen
 import mihon.icons.materialsymbols.MaterialSymbols
 import mihon.icons.materialsymbols.automirroredrounded.OpenInNew
-import mihon.icons.materialsymbols.rounded.VolunteerActivism
+import mihon.icons.materialsymbols.roundedfilled.VolunteerActivism
 import tachiyomi.core.common.Constants
-import tachiyomi.core.common.util.lang.launchIO
 import tachiyomi.core.common.util.system.logcat
 import tachiyomi.domain.library.service.LibraryPreferences
 import tachiyomi.domain.release.interactor.GetApplicationRelease
@@ -128,7 +131,10 @@ import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.util.collectAsState
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
+import kotlin.time.TimeSource
 import kotlin.time.times
 
 class MainActivity : BaseActivity() {
@@ -143,9 +149,13 @@ class MainActivity : BaseActivity() {
 
     @Inject private lateinit var chapterCache: ChapterCache
 
+    @Inject private lateinit var databaseRepository: DatabaseRepository
+
+    private val isAppMigrating = MutableStateFlow(Migrator.isRunning)
+
     @Inject private lateinit var getIncognitoState: GetIncognitoState
 
-    @Inject private lateinit var extensionApi: ExtensionApi
+    @Inject private lateinit var extensionManager: ExtensionManager
 
     // To be checked by splash screen. If true then splash screen will be removed.
     var ready = false
@@ -165,7 +175,13 @@ class MainActivity : BaseActivity() {
 
         super.onCreate(savedInstanceState)
 
-        Migrator.awaitAndRelease()
+        lifecycleScope.launch {
+            Migrator.awaitAndRelease()
+            isAppMigrating.value = false
+        }
+        // Uncaught on purpose: a failed database migration otherwise leaves the migrating screen up for good,
+        // while the crash screen tells what went wrong and lets the logs be shared
+        lifecycleScope.launch { databaseRepository.awaitOpen() }
 
         // Do not let the launcher create a new activity http://stackoverflow.com/questions/16283079
         if (!isTaskRoot) {
@@ -174,6 +190,27 @@ class MainActivity : BaseActivity() {
         }
 
         setComposeContent {
+            val appMigrating by isAppMigrating.collectAsState()
+            val databaseMigrating by databaseRepository.isMigrating.collectAsState()
+            val migrating = appMigrating || databaseMigrating
+            var migratingSince by remember { mutableStateOf(if (migrating) TimeSource.Monotonic.markNow() else null) }
+            LaunchedEffect(migrating) {
+                val since = migratingSince
+                if (migrating) {
+                    if (since == null) migratingSince = TimeSource.Monotonic.markNow()
+                } else if (since != null) {
+                    // A migration that finishes right away would otherwise only flash the screen
+                    delay(MIGRATING_SCREEN_MIN_DURATION - since.elapsedNow())
+                    migratingSince = null
+                }
+            }
+            if (migrating || migratingSince != null) {
+                AppMigratingScreen()
+                // Release the splash screen so the reason for the wait shows
+                LaunchedEffect(Unit) { ready = true }
+                return@setComposeContent
+            }
+
             val context = LocalContext.current
 
             var incognito by remember { mutableStateOf(false) }
@@ -288,7 +325,7 @@ class MainActivity : BaseActivity() {
         setSplashScreenExitAnimation(splashScreen)
 
         if (isLaunch && libraryPreferences.autoClearChapterCache.get()) {
-            lifecycleScope.launchIO {
+            lifecycleScope.launch(Dispatchers.IO) {
                 chapterCache.clear()
             }
         }
@@ -300,6 +337,16 @@ class MainActivity : BaseActivity() {
             is AssistContentScreen -> {
                 screen.onProvideAssistUrl()?.let { outContent.webUri = it.toUri() }
             }
+        }
+    }
+
+    override fun reportFullyDrawn() {
+        try {
+            super.reportFullyDrawn()
+        } catch (e: SecurityException) {
+            // Some Samsung Android 9 to 11 builds deny the platform's fully drawn broadcast
+            // and the report only feeds startup metrics, so it shouldn't crash the app
+            logcat(LogPriority.WARN, e)
         }
     }
 
@@ -320,52 +367,47 @@ class MainActivity : BaseActivity() {
     private fun CheckForUpdates() {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
-        var lastCheckedAt by remember { mutableLongStateOf(0L) }
 
-        suspend fun performCheck() {
-            if (!updaterEnabled) return
-            // Cooldown so switching apps doesn't hammer the GitHub API (60 req/h unauthenticated)
-            val now = System.currentTimeMillis()
-            if (now - lastCheckedAt < UPDATE_CHECK_COOLDOWN_MS) return
-            lastCheckedAt = now
-            try {
-                val result = context.appGraph.updateChecker.checkForUpdate()
-                if (result is GetApplicationRelease.Result.NewUpdate) {
-                    val updateScreen = NewUpdateScreen(
-                        versionName = result.release.version,
-                        changelogInfo = result.release.info,
-                        releaseLink = result.release.releaseLink,
-                        downloadLink = result.release.downloadLink,
-                    )
-                    navigator.push(updateScreen)
-                }
-            } catch (e: Exception) {
-                logcat(LogPriority.ERROR, e)
-            }
-        }
-
-        // Check on app start...
+        // App updates
         LaunchedEffect(Unit) {
-            performCheck()
-        }
-
-        // ...and every time the app comes back to the foreground, so new releases
-        // are caught without having to cold-start the app.
-        val lifecycleOwner = LocalLifecycleOwner.current
-        DisposableEffect(lifecycleOwner) {
-            val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) {
-                    lifecycleOwner.lifecycleScope.launch { performCheck() }
+            if (!updaterEnabled) return@LaunchedEffect
+            var lastCheck: Long? = null
+            // The app can stay open for days now, so a cold start alone rarely checks.
+            // Elapsed realtime keeps counting while the device sleeps, unlike the monotonic clock.
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    lastCheck?.let {
+                        delay(it + APP_UPDATE_CHECK_INTERVAL.inWholeMilliseconds - SystemClock.elapsedRealtime())
+                    }
+                    lastCheck = SystemClock.elapsedRealtime()
+                    try {
+                        val result = context.appGraph.updateChecker.checkForUpdate()
+                        if (
+                            result is GetApplicationRelease.Result.NewUpdate &&
+                            result.release.version != preferences.skippedAppUpdate.get() &&
+                            navigator.items.none { it is NewUpdateScreen }
+                        ) {
+                            val updateScreen = NewUpdateScreen(
+                                versionName = result.release.version,
+                                changelogInfo = result.release.info,
+                                releaseLink = result.release.releaseLink,
+                                downloadLink = result.release.downloadLink,
+                            )
+                            navigator.push(updateScreen)
+                        }
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        logcat(LogPriority.ERROR, e)
+                    }
                 }
             }
-            lifecycleOwner.lifecycle.addObserver(observer)
-            onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
         }
 
         // Extensions updates
         LaunchedEffect(Unit) {
             try {
-                extensionApi.checkForUpdates(context)
+                extensionManager.checkForUpdates()
             } catch (e: Exception) {
                 logcat(LogPriority.ERROR, e)
             }
@@ -444,7 +486,7 @@ class MainActivity : BaseActivity() {
                             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.padding.small),
                         ) {
                             Icon(
-                                imageVector = MaterialSymbols.Rounded.VolunteerActivism,
+                                imageVector = MaterialSymbols.RoundedFilled.VolunteerActivism,
                                 contentDescription = null,
                             )
                             Text(
@@ -640,4 +682,6 @@ class MainActivity : BaseActivity() {
 private const val SPLASH_MIN_DURATION = 500 // ms
 private const val SPLASH_MAX_DURATION = 5000 // ms
 private const val SPLASH_EXIT_ANIM_DURATION = 400L // ms
-private const val UPDATE_CHECK_COOLDOWN_MS = 10 * 60 * 1000L // 10 min between GitHub API checks
+
+private val MIGRATING_SCREEN_MIN_DURATION = 1.seconds
+private val APP_UPDATE_CHECK_INTERVAL = 6.hours

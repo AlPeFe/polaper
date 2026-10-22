@@ -22,11 +22,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import eu.kanade.presentation.more.settings.LocalPreferenceHighlighted
 import eu.kanade.presentation.track.components.TrackLogoIcon
+import eu.kanade.tachiyomi.data.track.EnhancedTracker
 import eu.kanade.tachiyomi.data.track.Tracker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mihon.icons.materialsymbols.MaterialSymbols
-import mihon.icons.materialsymbols.rounded.Done
+import mihon.icons.materialsymbols.rounded.Check
 import mihon.icons.materialsymbols.rounded.Refresh
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.i18n.stringResource
@@ -55,6 +56,7 @@ fun TrackingPreferenceWidget(
                         onClick = { onClick?.invoke() },
                     )
                     .weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 TrackLogoIcon(tracker)
                 Column(
@@ -81,29 +83,31 @@ fun TrackingPreferenceWidget(
                 }
             }
             if (isLoggedIn) {
-                IconButton(
-                    enabled = !isRefreshing,
-                    onClick = {
-                        scope.launch { tracker.refreshUser() }
-                    },
-                ) {
-                    if (!isRefreshing) {
-                        Icon(
-                            imageVector = MaterialSymbols.Rounded.Refresh,
-                            modifier = Modifier
-                                .padding(4.dp)
-                                .size(32.dp),
-                            contentDescription = stringResource(MR.strings.refresh_tracker_profile),
-                        )
-                    } else {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
-                            strokeWidth = 2.dp,
-                        )
+                if (tracker !is EnhancedTracker) {
+                    IconButton(
+                        enabled = !isRefreshing,
+                        onClick = {
+                            scope.launch { tracker.refreshUser() }
+                        },
+                    ) {
+                        if (!isRefreshing) {
+                            Icon(
+                                imageVector = MaterialSymbols.Rounded.Refresh,
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .size(32.dp),
+                                contentDescription = stringResource(MR.strings.refresh_tracker_profile),
+                            )
+                        } else {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(24.dp),
+                                strokeWidth = 2.dp,
+                            )
+                        }
                     }
                 }
                 Icon(
-                    imageVector = MaterialSymbols.Rounded.Done,
+                    imageVector = MaterialSymbols.Rounded.Check,
                     modifier = Modifier
                         .padding(4.dp)
                         .size(32.dp),
