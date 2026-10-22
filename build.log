@@ -1,0 +1,569 @@
+Fetching distribution.
+Downloading https://services.gradle.org/distributions/gradle-9.8.2-bin.zip
+..............10%..............20%...............30%..............40%...............50%..............60%...............70%..............80%...............90%..............100%
+
+Welcome to Gradle 9.8.2!
+
+Here are the highlights of this release:
+ - Java 27 support
+ - Maven mirror settings reuse
+ - Linked problem locations in build output
+
+For more details see https://docs.gradle.org/9.8.2/release-notes.html
+
+Starting a Gradle Daemon (subsequent builds will be faster)
+Isolated Projects is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:assembleDebug
+Type-safe project accessors is an incubating feature.
+> Task :build-logic:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:compileKotlin
+> Task :build-logic:pluginDescriptors
+> Task :build-logic:processResources
+> Task :build-logic:compileJava NO-SOURCE
+> Task :build-logic:classes
+> Task :build-logic:jar
+> Task :app:preBuild UP-TO-DATE
+> Task :core-metadata:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugResources
+> Task :app:replaceDebugShortcutPlaceholder
+> Task :core-metadata:preDebugBuild UP-TO-DATE
+> Task :core-metadata:generateDebugResources
+> Task :core-metadata:packageDebugResources
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResources FROM-CACHE
+> Task :data:packageDebugResources
+> Task :domain:preBuild UP-TO-DATE
+> Task :domain:preDebugBuild UP-TO-DATE
+> Task :domain:generateDebugResources FROM-CACHE
+> Task :domain:packageDebugResources
+> Task :i18n:generateAndroidMainLocalesConfig
+> Task :i18n:generateMRcommonTest
+> Task :i18n:generateMRandroidHostTest
+> Task :app:prepareLibraryDefinitionsDebug
+> Task :i18n:androidPreBuild UP-TO-DATE
+> Task :i18n:preAndroidMainBuild UP-TO-DATE
+> Task :presentation-core:preBuild UP-TO-DATE
+> Task :presentation-core:preDebugBuild UP-TO-DATE
+> Task :presentation-core:generateDebugResources
+> Task :presentation-core:packageDebugResources
+> Task :presentation-widget:preBuild UP-TO-DATE
+> Task :presentation-widget:preDebugBuild UP-TO-DATE
+> Task :i18n:generateMRcommonMain
+> Task :presentation-widget:generateDebugResources
+> Task :presentation-widget:packageDebugResources
+> Task :source-api:preBuild UP-TO-DATE
+> Task :source-api:preDebugBuild UP-TO-DATE
+> Task :source-api:generateDebugResources FROM-CACHE
+> Task :source-api:packageDebugResources
+> Task :source-local:preBuild UP-TO-DATE
+> Task :source-local:preDebugBuild UP-TO-DATE
+> Task :source-local:generateDebugResources FROM-CACHE
+> Task :source-local:packageDebugResources
+> Task :telemetry:preBuild UP-TO-DATE
+> Task :telemetry:preDebugBuild UP-TO-DATE
+> Task :telemetry:generateDebugResources FROM-CACHE
+> Task :telemetry:packageDebugResources
+> Task :core:archive:preBuild UP-TO-DATE
+> Task :core:archive:preDebugBuild UP-TO-DATE
+> Task :core:archive:generateDebugResources FROM-CACHE
+> Task :core:archive:packageDebugResources
+> Task :core:common:preBuild UP-TO-DATE
+> Task :core:common:preDebugBuild UP-TO-DATE
+> Task :core:common:generateDebugResources FROM-CACHE
+> Task :core:common:packageDebugResources
+> Task :core:metro:preBuild UP-TO-DATE
+> Task :core:metro:preDebugBuild UP-TO-DATE
+> Task :core:metro:generateDebugResources FROM-CACHE
+> Task :core:metro:packageDebugResources
+> Task :icons:custom-material-symbols:preBuild UP-TO-DATE
+> Task :icons:custom-material-symbols:preDebugBuild UP-TO-DATE
+> Task :icons:custom-material-symbols:generateDebugResources FROM-CACHE
+> Task :icons:custom-material-symbols:packageDebugResources
+> Task :icons:material-symbols:preBuild UP-TO-DATE
+> Task :icons:material-symbols:preDebugBuild UP-TO-DATE
+> Task :icons:material-symbols:generateDebugResources
+> Task :icons:material-symbols:generateDebugVectorDrawables
+> Task :icons:material-symbols:packageDebugResources
+> Task :icons:simple-icons:preBuild UP-TO-DATE
+> Task :icons:simple-icons:preDebugBuild UP-TO-DATE
+> Task :icons:simple-icons:generateDebugResources FROM-CACHE
+> Task :icons:simple-icons:packageDebugResources
+> Task :app:packageDebugResources
+> Task :core-metadata:processDebugNavigationResources
+> Task :data:processDebugNavigationResources FROM-CACHE
+> Task :domain:processDebugNavigationResources FROM-CACHE
+> Task :i18n:generateAndroidMainEmptyResourceFiles
+> Task :presentation-core:processDebugNavigationResources
+> Task :presentation-widget:processDebugNavigationResources
+> Task :source-api:processDebugNavigationResources FROM-CACHE
+> Task :source-local:processDebugNavigationResources FROM-CACHE
+> Task :telemetry:processDebugNavigationResources FROM-CACHE
+> Task :core:archive:processDebugNavigationResources FROM-CACHE
+> Task :core:common:processDebugNavigationResources FROM-CACHE
+> Task :core:metro:processDebugNavigationResources FROM-CACHE
+> Task :icons:custom-material-symbols:processDebugNavigationResources FROM-CACHE
+> Task :icons:material-symbols:processDebugNavigationResources
+> Task :icons:simple-icons:processDebugNavigationResources FROM-CACHE
+> Task :i18n:generateMRandroidMain
+> Task :i18n:packageAndroidMainResources
+> Task :app:compileDebugAidl
+> Task :app:dataBindingMergeDependencyArtifactsDebug
+> Task :app:processDebugNavigationResources
+> Task :data:parseDebugLocalResources
+> Task :core-metadata:parseDebugLocalResources
+> Task :core-metadata:generateDebugRFile
+> Task :domain:parseDebugLocalResources FROM-CACHE
+> Task :data:generateDebugRFile
+> Task :domain:generateDebugRFile
+> Task :presentation-core:parseDebugLocalResources
+> Task :app:parseDebugLocalResources
+> Task :i18n:parseAndroidMainLocalResources
+> Task :presentation-core:generateDebugRFile
+> Task :source-api:parseDebugLocalResources FROM-CACHE
+> Task :source-api:generateDebugRFile
+> Task :source-local:parseDebugLocalResources FROM-CACHE
+> Task :presentation-widget:parseDebugLocalResources
+> Task :i18n:generateAndroidMainRFile
+> Task :telemetry:parseDebugLocalResources FROM-CACHE
+> Task :source-local:generateDebugRFile
+> Task :core:archive:parseDebugLocalResources FROM-CACHE
+> Task :presentation-widget:generateDebugRFile
+> Task :core:common:parseDebugLocalResources FROM-CACHE
+> Task :telemetry:generateDebugRFile
+> Task :core:metro:parseDebugLocalResources FROM-CACHE
+> Task :core:common:generateDebugRFile
+> Task :core:archive:generateDebugRFile
+> Task :core:metro:generateDebugRFile
+> Task :icons:custom-material-symbols:parseDebugLocalResources FROM-CACHE
+> Task :icons:simple-icons:parseDebugLocalResources FROM-CACHE
+> Task :icons:material-symbols:parseDebugLocalResources
+> Task :icons:simple-icons:generateDebugRFile
+> Task :icons:material-symbols:generateDebugRFile
+> Task :icons:custom-material-symbols:generateDebugRFile
+> Task :app:generateDebugRFile
+> Task :app:generateDebugBuildConfig
+> Task :app:generateAnilistApolloOptions
+> Task :app:generateShikimoriApolloOptions
+> Task :app:generateKitsuApolloOptions
+> Task :app:mergeDebugResources
+> Task :app:generateShikimoriApolloSources
+> Task :app:generateSuwayomiApolloOptions
+> Task :app:generateAnilistApolloSources
+> Task :i18n:kmpPartiallyResolvedDependenciesChecker
+> Task :i18n:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateKitsuApolloSources
+> Task :app:generateSuwayomiApolloSources
+> Task :core:metro:javaPreCompileDebug
+> Task :core:common:javaPreCompileDebug FROM-CACHE
+> Task :source-api:javaPreCompileDebug FROM-CACHE
+> Task :core-metadata:javaPreCompileDebug FROM-CACHE
+> Task :i18n:compileAndroidMain
+> Task :core:metro:compileDebugKotlin
+> Task :data:generateDebugDatabaseInterface
+> Task :core:metro:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:metro:bundleLibCompileToJarDebug
+> Task :domain:javaPreCompileDebug FROM-CACHE
+> Task :data:javaPreCompileDebug FROM-CACHE
+> Task :icons:material-symbols:generateValkyrieImageVectorAndroidTest SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorAndroidTestDebug SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorAndroidTestRelease SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorDebug SKIPPED
+
+> Task :icons:material-symbols:generateValkyrieImageVectorMain
+Found icons names that conflict with reserved Compose qualifiers. Full qualified import will be used for: "Brush"
+Generated "MaterialSymbols" iconpack in package "mihon.icons.materialsymbols"
+Generated 9 ImageVector icons in nested pack "AutoMirroredRounded" (package: "mihon.icons.materialsymbols.automirroredrounded")
+Generated 1 ImageVector icon in nested pack "AutoMirroredRoundedFilled" (package: "mihon.icons.materialsymbols.automirroredroundedfilled")
+Generated 89 ImageVector icons in nested pack "Rounded" (package: "mihon.icons.materialsymbols.rounded")
+Generated 23 ImageVector icons in nested pack "RoundedFilled" (package: "mihon.icons.materialsymbols.roundedfilled")
+
+> Task :icons:material-symbols:generateValkyrieImageVectorRelease SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorTest SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorTestDebug SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorTestFixtures SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorTestFixturesDebug SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorTestFixturesRelease SKIPPED
+> Task :icons:material-symbols:generateValkyrieImageVectorTestRelease SKIPPED
+> Task :app:dataBindingGenBaseClassesDebug
+> Task :icons:material-symbols:javaPreCompileDebug FROM-CACHE
+> Task :presentation-core:javaPreCompileDebug FROM-CACHE
+> Task :presentation-widget:javaPreCompileDebug FROM-CACHE
+> Task :core:archive:javaPreCompileDebug FROM-CACHE
+> Task :source-local:javaPreCompileDebug FROM-CACHE
+> Task :telemetry:javaPreCompileDebug FROM-CACHE
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorAndroidTest SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorAndroidTestDebug SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorAndroidTestRelease SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorDebug SKIPPED
+
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorMain
+Generated "CustomMaterialSymbols" iconpack in package "mihon.icons.custommaterialsymbols"
+Generated 9 ImageVector icons in nested pack "Rounded" (package: "mihon.icons.custommaterialsymbols.rounded")
+
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorRelease SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorTest SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorTestDebug SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorTestFixtures SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorTestFixturesDebug SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorTestFixturesRelease SKIPPED
+> Task :icons:custom-material-symbols:generateValkyrieImageVectorTestRelease SKIPPED
+> Task :icons:material-symbols:compileDebugKotlin
+> Task :core:archive:compileDebugKotlin
+> Task :core:archive:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:archive:bundleLibCompileToJarDebug
+> Task :icons:custom-material-symbols:javaPreCompileDebug FROM-CACHE
+> Task :icons:simple-icons:generateValkyrieImageVectorAndroidTest SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorAndroidTestDebug SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorAndroidTestRelease SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorDebug SKIPPED
+
+> Task :icons:simple-icons:generateValkyrieImageVectorMain
+Generated "SimpleIcons" iconpack in package "mihon.icons.simpleicons"
+Generated 7 ImageVector icons in package "mihon.icons.simpleicons"
+
+> Task :icons:simple-icons:generateValkyrieImageVectorRelease SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorTest SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorTestDebug SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorTestFixtures SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorTestFixturesDebug SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorTestFixturesRelease SKIPPED
+> Task :icons:simple-icons:generateValkyrieImageVectorTestRelease SKIPPED
+> Task :icons:custom-material-symbols:compileDebugKotlin
+> Task :icons:custom-material-symbols:compileDebugJavaWithJavac NO-SOURCE
+> Task :icons:custom-material-symbols:bundleLibCompileToJarDebug
+> Task :icons:simple-icons:javaPreCompileDebug FROM-CACHE
+> Task :app:javaPreCompileDebug FROM-CACHE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :core-metadata:generateDebugAssets UP-TO-DATE
+> Task :core-metadata:mergeDebugAssets
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:mergeDebugAssets
+> Task :domain:generateDebugAssets UP-TO-DATE
+> Task :domain:mergeDebugAssets
+> Task :i18n:generateAndroidMainAssets UP-TO-DATE
+> Task :i18n:mergeAndroidMainAssets
+> Task :presentation-core:generateDebugAssets UP-TO-DATE
+> Task :presentation-core:mergeDebugAssets
+> Task :presentation-widget:generateDebugAssets UP-TO-DATE
+> Task :presentation-widget:mergeDebugAssets
+> Task :source-api:generateDebugAssets UP-TO-DATE
+> Task :source-api:mergeDebugAssets
+> Task :source-local:generateDebugAssets UP-TO-DATE
+> Task :source-local:mergeDebugAssets
+> Task :telemetry:generateDebugAssets UP-TO-DATE
+> Task :telemetry:mergeDebugAssets
+> Task :core:archive:generateDebugAssets UP-TO-DATE
+> Task :core:archive:mergeDebugAssets
+> Task :core:common:generateDebugAssets UP-TO-DATE
+> Task :core:common:mergeDebugAssets
+> Task :core:metro:generateDebugAssets UP-TO-DATE
+> Task :core:metro:mergeDebugAssets
+> Task :icons:custom-material-symbols:generateDebugAssets UP-TO-DATE
+> Task :icons:custom-material-symbols:mergeDebugAssets
+> Task :icons:material-symbols:generateDebugAssets UP-TO-DATE
+> Task :icons:material-symbols:mergeDebugAssets
+> Task :icons:simple-icons:generateDebugAssets UP-TO-DATE
+> Task :icons:simple-icons:mergeDebugAssets
+> Task :i18n:bundleAndroidMainClassesToCompileJar
+> Task :icons:simple-icons:compileDebugKotlin
+> Task :icons:simple-icons:compileDebugJavaWithJavac NO-SOURCE
+> Task :app:mergeDebugAssets
+> Task :icons:simple-icons:bundleLibCompileToJarDebug
+> Task :app:compressDebugAssets
+> Task :core:common:compileDebugKotlin
+> Task :app:generateDebugGlobalSynthetics
+> Task :i18n:processAndroidMainJavaRes
+> Task :core:archive:processDebugJavaRes
+> Task :core:metro:processDebugJavaRes
+> Task :icons:custom-material-symbols:processDebugJavaRes
+> Task :icons:simple-icons:processDebugJavaRes
+> Task :app:l8DexDesugarLibDebug
+> Task :app:desugarDebugFileDependencies
+> Task :icons:material-symbols:compileDebugJavaWithJavac NO-SOURCE
+> Task :icons:custom-material-symbols:bundleLibRuntimeToDirDebug
+> Task :icons:material-symbols:processDebugJavaRes
+> Task :app:checkDebugDuplicateClasses
+> Task :icons:material-symbols:bundleLibCompileToJarDebug
+> Task :icons:material-symbols:bundleLibRuntimeToDirDebug
+> Task :icons:simple-icons:bundleLibRuntimeToDirDebug
+> Task :i18n:bundleLibRuntimeToDirAndroidMain
+> Task :app:mergeExtDexDebug
+> Task :core:metro:bundleLibRuntimeToDirDebug
+> Task :core-metadata:writeDebugAarMetadata
+> Task :core:archive:bundleLibRuntimeToDirDebug
+> Task :data:writeDebugAarMetadata
+> Task :core:common:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:common:bundleLibCompileToJarDebug
+> Task :source-api:compileDebugKotlin
+> Task :source-api:compileDebugJavaWithJavac NO-SOURCE
+> Task :source-api:bundleLibCompileToJarDebug
+> Task :core-metadata:compileDebugKotlin
+> Task :core-metadata:compileDebugJavaWithJavac NO-SOURCE
+> Task :core-metadata:bundleLibCompileToJarDebug
+> Task :domain:compileDebugKotlin
+> Task :presentation-core:compileDebugKotlin
+> Task :telemetry:compileDebugKotlin
+> Task :telemetry:compileDebugJavaWithJavac NO-SOURCE
+> Task :telemetry:bundleLibCompileToJarDebug
+> Task :core-metadata:processDebugJavaRes
+> Task :source-api:processDebugJavaRes
+> Task :telemetry:processDebugJavaRes
+> Task :core:common:processDebugJavaRes
+> Task :core-metadata:bundleLibRuntimeToDirDebug
+> Task :source-api:bundleLibRuntimeToDirDebug
+> Task :telemetry:bundleLibRuntimeToDirDebug
+> Task :core:common:bundleLibRuntimeToDirDebug
+> Task :domain:writeDebugAarMetadata
+> Task :i18n:writeAndroidMainAarMetadata
+> Task :presentation-core:writeDebugAarMetadata
+> Task :presentation-widget:writeDebugAarMetadata
+> Task :source-api:writeDebugAarMetadata
+> Task :source-local:writeDebugAarMetadata
+> Task :telemetry:writeDebugAarMetadata
+> Task :core:archive:writeDebugAarMetadata
+> Task :core:common:writeDebugAarMetadata
+> Task :core:metro:writeDebugAarMetadata
+> Task :icons:custom-material-symbols:writeDebugAarMetadata
+> Task :icons:material-symbols:writeDebugAarMetadata
+> Task :icons:simple-icons:writeDebugAarMetadata
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :core-metadata:extractDeepLinksDebug
+> Task :core-metadata:processDebugManifest
+> Task :data:extractDeepLinksDebug FROM-CACHE
+> Task :data:processDebugManifest
+> Task :domain:extractDeepLinksDebug FROM-CACHE
+> Task :domain:processDebugManifest
+> Task :i18n:processAndroidMainManifest
+> Task :presentation-core:extractDeepLinksDebug FROM-CACHE
+> Task :presentation-core:processDebugManifest
+> Task :presentation-widget:extractDeepLinksDebug FROM-CACHE
+> Task :presentation-widget:processDebugManifest
+> Task :source-api:extractDeepLinksDebug FROM-CACHE
+> Task :source-api:processDebugManifest
+> Task :source-local:extractDeepLinksDebug FROM-CACHE
+> Task :source-local:processDebugManifest
+> Task :telemetry:extractDeepLinksDebug FROM-CACHE
+> Task :telemetry:processDebugManifest
+> Task :core:archive:extractDeepLinksDebug FROM-CACHE
+> Task :core:archive:processDebugManifest
+> Task :core:common:extractDeepLinksDebug FROM-CACHE
+> Task :core:common:processDebugManifest
+> Task :core:metro:extractDeepLinksDebug FROM-CACHE
+> Task :core:metro:processDebugManifest
+> Task :icons:custom-material-symbols:extractDeepLinksDebug FROM-CACHE
+> Task :icons:custom-material-symbols:processDebugManifest
+> Task :icons:material-symbols:extractDeepLinksDebug FROM-CACHE
+> Task :icons:material-symbols:processDebugManifest
+> Task :icons:simple-icons:extractDeepLinksDebug FROM-CACHE
+> Task :icons:simple-icons:processDebugManifest
+> Task :presentation-core:compileDebugJavaWithJavac NO-SOURCE
+> Task :presentation-core:bundleLibCompileToJarDebug
+> Task :presentation-core:processDebugJavaRes
+> Task :presentation-core:bundleLibRuntimeToDirDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :core-metadata:mapDebugSourceSetPaths
+> Task :core-metadata:compileDebugLibraryResources
+> Task :data:mapDebugSourceSetPaths
+> Task :data:compileDebugLibraryResources FROM-CACHE
+> Task :domain:mapDebugSourceSetPaths
+> Task :domain:compileDebugLibraryResources FROM-CACHE
+> Task :i18n:mapAndroidMainSourceSetPaths
+> Task :i18n:compileAndroidMainLibraryResources
+> Task :presentation-core:mapDebugSourceSetPaths
+> Task :presentation-core:compileDebugLibraryResources
+> Task :presentation-widget:mapDebugSourceSetPaths
+> Task :presentation-widget:compileDebugLibraryResources
+> Task :source-api:mapDebugSourceSetPaths
+> Task :source-api:compileDebugLibraryResources FROM-CACHE
+> Task :source-local:mapDebugSourceSetPaths
+> Task :source-local:compileDebugLibraryResources FROM-CACHE
+> Task :telemetry:mapDebugSourceSetPaths
+> Task :telemetry:compileDebugLibraryResources FROM-CACHE
+> Task :core:archive:mapDebugSourceSetPaths
+> Task :core:archive:compileDebugLibraryResources FROM-CACHE
+> Task :core:common:mapDebugSourceSetPaths
+> Task :core:common:compileDebugLibraryResources FROM-CACHE
+> Task :core:metro:mapDebugSourceSetPaths
+> Task :icons:custom-material-symbols:mapDebugSourceSetPaths
+> Task :icons:custom-material-symbols:compileDebugLibraryResources FROM-CACHE
+> Task :icons:material-symbols:mapDebugSourceSetPaths
+> Task :core:metro:compileDebugLibraryResources FROM-CACHE
+> Task :icons:simple-icons:mapDebugSourceSetPaths
+> Task :icons:simple-icons:compileDebugLibraryResources FROM-CACHE
+> Task :icons:material-symbols:compileDebugLibraryResources
+> Task :core-metadata:mergeDebugJniLibFolders
+> Task :core-metadata:mergeDebugNativeLibs NO-SOURCE
+> Task :domain:compileDebugJavaWithJavac NO-SOURCE
+> Task :domain:bundleLibCompileToJarDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :core-metadata:copyDebugJniLibsProjectOnly
+> Task :app:processDebugResources
+> Task :source-local:compileDebugKotlin
+> Task :source-local:compileDebugJavaWithJavac NO-SOURCE
+> Task :source-local:bundleLibCompileToJarDebug
+> Task :data:compileDebugKotlin
+> Task :domain:processDebugJavaRes
+> Task :source-local:processDebugJavaRes
+> Task :source-local:bundleLibRuntimeToDirDebug
+> Task :presentation-widget:compileDebugKotlin
+> Task :presentation-widget:compileDebugJavaWithJavac NO-SOURCE
+> Task :presentation-widget:bundleLibCompileToJarDebug
+> Task :presentation-widget:processDebugJavaRes
+> Task :presentation-widget:bundleLibRuntimeToDirDebug
+> Task :data:mergeDebugJniLibFolders
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly
+> Task :domain:mergeDebugJniLibFolders
+> Task :domain:mergeDebugNativeLibs NO-SOURCE
+> Task :domain:copyDebugJniLibsProjectOnly
+> Task :i18n:mergeAndroidMainJniLibFolders
+> Task :i18n:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :i18n:copyAndroidMainJniLibsProjectOnly
+> Task :presentation-core:mergeDebugJniLibFolders
+> Task :presentation-core:mergeDebugNativeLibs NO-SOURCE
+> Task :presentation-core:copyDebugJniLibsProjectOnly
+> Task :presentation-widget:mergeDebugJniLibFolders
+> Task :presentation-widget:mergeDebugNativeLibs NO-SOURCE
+> Task :presentation-widget:copyDebugJniLibsProjectOnly
+> Task :source-api:mergeDebugJniLibFolders
+> Task :source-api:mergeDebugNativeLibs NO-SOURCE
+> Task :source-api:copyDebugJniLibsProjectOnly
+> Task :source-local:mergeDebugJniLibFolders
+> Task :source-local:mergeDebugNativeLibs NO-SOURCE
+> Task :source-local:copyDebugJniLibsProjectOnly
+> Task :telemetry:mergeDebugJniLibFolders
+> Task :telemetry:mergeDebugNativeLibs NO-SOURCE
+> Task :telemetry:copyDebugJniLibsProjectOnly
+> Task :core:archive:mergeDebugJniLibFolders
+> Task :core:archive:mergeDebugNativeLibs NO-SOURCE
+> Task :core:archive:copyDebugJniLibsProjectOnly
+> Task :core:common:mergeDebugJniLibFolders
+> Task :core:common:mergeDebugNativeLibs NO-SOURCE
+> Task :core:common:copyDebugJniLibsProjectOnly
+> Task :core:metro:mergeDebugJniLibFolders
+> Task :core:metro:mergeDebugNativeLibs NO-SOURCE
+> Task :core:metro:copyDebugJniLibsProjectOnly
+> Task :icons:custom-material-symbols:mergeDebugJniLibFolders
+> Task :icons:custom-material-symbols:mergeDebugNativeLibs NO-SOURCE
+> Task :icons:custom-material-symbols:copyDebugJniLibsProjectOnly
+> Task :icons:material-symbols:mergeDebugJniLibFolders
+> Task :icons:material-symbols:mergeDebugNativeLibs NO-SOURCE
+> Task :icons:material-symbols:copyDebugJniLibsProjectOnly
+> Task :icons:simple-icons:mergeDebugJniLibFolders
+> Task :icons:simple-icons:mergeDebugNativeLibs NO-SOURCE
+> Task :domain:bundleLibRuntimeToDirDebug
+> Task :icons:simple-icons:copyDebugJniLibsProjectOnly
+> Task :app:mergeDebugNativeLibs
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libresize.so, libsqliteJni.so, libssiv_crop.so, libwebgpu_c_bundled.so, libzstd-kmp.so. Run with --info option to learn more.
+
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:processDebugJavaRes
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:bundleLibRuntimeToDirDebug
+> Task :app:mergeLibDexDebug
+> Task :app:compileDebugKotlin
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/MangaScreen.kt:376:25 No value passed for parameter 'sourceName'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/MangaScreen.kt:380:29 No parameter with name 'source' found.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/MangaScreen.kt:602:25 No value passed for parameter 'sourceName'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/MangaScreen.kt:606:29 No parameter with name 'source' found.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:83:44 Unresolved reference 'Brush'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:85:44 Unresolved reference 'Done'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:90:44 Unresolved reference 'Pause'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:95:44 Unresolved reference 'Warning'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:233:102 Unresolved reference 'Done'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:502:55 Unresolved reference 'Brush'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:530:80 Unresolved reference 'Done'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:532:70 Unresolved reference 'Pause'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:557:59 Unresolved reference 'Warning'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/components/MangaInfoHeader.kt:679:87 Unresolved reference 'anim_caret_down'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/more/MoreScreen.kt:61:66 Unresolved reference 'ic_glasses_24dp'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:45:40 Unresolved reference 'launchIO'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:56:37 Unresolved reference 'toMangaUpdate'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:97:24 Unresolved reference 'launchIO' on receiver of type 'CoroutineScope'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:98:40 Suspend function 'suspend fun getOrStub(sourceKey: Long): Source' can only be called from a coroutine or another suspend function.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:117:36 Suspend function 'suspend fun await(sourceId: Long?): Boolean' can only be called from a coroutine or another suspend function.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:259:17 No parameter with name 'favorite' found.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:260:17 No parameter with name 'dateAdded' found.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:267:21 Assignment type mismatch: actual type is 'Unit', but 'Manga' was expected.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:273:35 Unresolved reference 'toMangaUpdate' on receiver of type 'Manga'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:333:24 Unresolved reference 'launchIO' on receiver of type 'CoroutineScope'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/browse/BrowseSourceViewModel.kt:334:32 Suspend function 'suspend fun await(mangaId: Long, categoryIds: List<Long>): Unit' can only be called from a coroutine or another suspend function.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:25:40 Unresolved reference 'launchIO'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:110:33 Unresolved reference 'getInstalledExtensions' on receiver of type 'ExtensionManager'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:111:23 Unresolved reference 'it'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:112:24 Unresolved reference 'it'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:113:23 Unresolved reference 'it'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:143:36 Unresolved reference 'launchIO' on receiver of type 'CoroutineScope'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:144:27 Suspend function 'suspend fun getSelectedSources(): List<Source>' can only be called from a coroutine or another suspend function.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:161:17 'fun <T> async(context: CoroutineContext = ..., start: CoroutineStart = ..., block: suspend CoroutineScope.() -> T): Deferred<T>' is deprecated. 'async' can not be called without the corresponding coroutine scope. Consider wrapping 'async' in 'coroutineScope { }', using 'runBlocking { }', or using some other 'CoroutineScope'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:186:18 Suspend function 'suspend fun <T> Collection<Deferred<T>>.awaitAll(): List<T>' can only be called from a coroutine or another suspend function.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:204:24 Unresolved reference 'launchIO' on receiver of type 'CoroutineScope'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/browse/source/globalsearch/SearchViewModel.kt:205:36 Suspend function 'suspend fun await(id: Long): Manga?' can only be called from a coroutine or another suspend function.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/more/MoreTab.kt:37:40 Unresolved reference 'launchIO'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/more/MoreTab.kt:47:79 Unresolved reference 'anim_more_enter'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/more/MoreTab.kt:96:24 Unresolved reference 'launchIO' on receiver of type 'CoroutineScope'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/more/MoreTab.kt:101:18 Suspend function 'suspend fun <T> Flow<T>.collectLatest(action: suspend (T) -> Unit): Unit' can only be called from a coroutine or another suspend function.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/ReaderChromePages.kt:67:36 Cannot access 'fun readerBackgroundColor(): Int': it is private in 'eu.kanade.tachiyomi.ui.reader.viewer.webgpu.WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/ReaderChromePages.kt:79:30 Unresolved reference 'readerThemedContext' on receiver of type 'WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/ReaderChromePages.kt:120:50 Unresolved reference 'retryLoad' on receiver of type 'WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/ReaderChromePages.kt:247:23 Unresolved reference 'downloadManager' on receiver of type 'WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:35:8 Unresolved reference 'de'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:36:8 Unresolved reference 'de'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:37:8 Unresolved reference 'de'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:890:21 Unresolved reference 'minZoomWidthFraction'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:1063:27 Unresolved reference 'Kim'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:1064:39 Unresolved reference 'TiffTag'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:1073:36 Unresolved reference 'new'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:1116:24 Unresolved reference 'add'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:1116:28 Cannot infer type for type parameter 'B'. Specify it explicitly.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:1130:28 Unresolved reference 'add'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewer.kt:1130:32 Cannot infer type for type parameter 'B'. Specify it explicitly.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewerContinuous.kt:25:33 Cannot access 'fun readerBackgroundColor(): Int': it is private in 'eu.kanade.tachiyomi.ui.reader.viewer.webgpu.WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewerContinuous.kt:42:34 Cannot access 'val scope: CoroutineScope': it is private in 'eu.kanade.tachiyomi.ui.reader.viewer.webgpu.WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewerContinuous.kt:44:17 Cannot access 'val scope: CoroutineScope': it is private in 'eu.kanade.tachiyomi.ui.reader.viewer.webgpu.WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewerContinuous.kt:63:9 Cannot access 'val scope: CoroutineScope': it is private in 'eu.kanade.tachiyomi.ui.reader.viewer.webgpu.WebGpuViewer'.
+e: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/tachiyomi/ui/reader/viewer/webgpu/WebGpuViewerContinuous.kt:73:17 Unresolved reference 'viewerPageFor'.
+
+> Task :app:compileDebugKotlin FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin' (registered by plugin 'com.android.internal.application').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: NO_VALUE_FOR_PARAMETER
+       Kotlin compiler error
+         No value passed for parameter 'sourceName'.
+         Location: C:/Users/alexlocal/AppData/Local/Temp/polaper-v0212/app/src/main/java/eu/kanade/presentation/manga/MangaScreen.kt:376
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.8.2/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 20m 11s
+327 actionable tasks: 261 executed, 66 from cache
+Configuration cache entry stored.

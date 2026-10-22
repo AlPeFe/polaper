@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.ui.browse.source.browse
 
+import tachiyomi.domain.chapter.interactor.GetChaptersByMangaId
 import android.content.res.Configuration
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.runtime.Immutable
@@ -29,9 +30,12 @@ import eu.kanade.tachiyomi.data.cache.CoverCache
 import eu.kanade.tachiyomi.source.Source
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.util.removeCovers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
@@ -40,9 +44,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import mihon.core.metro.AppCoroutineScope
 import tachiyomi.core.common.preference.CheckboxState
 import tachiyomi.core.common.preference.mapAsCheckboxState
-import tachiyomi.core.common.util.lang.launchIO
 import tachiyomi.domain.category.interactor.GetCategories
 import tachiyomi.domain.category.interactor.SetMangaCategories
 import tachiyomi.domain.category.model.Category
@@ -50,19 +54,20 @@ import tachiyomi.domain.chapter.interactor.SetMangaDefaultChapterFlags
 import tachiyomi.domain.library.service.LibraryPreferences
 import tachiyomi.domain.manga.interactor.GetDuplicateLibraryManga
 import tachiyomi.domain.manga.interactor.GetManga
-import tachiyomi.domain.chapter.interactor.GetChaptersByMangaId
 import tachiyomi.domain.manga.model.Manga
+import tachiyomi.domain.manga.model.MangaUpdate
 import tachiyomi.domain.manga.model.MangaWithChapterCount
-import tachiyomi.domain.manga.model.toMangaUpdate
 import tachiyomi.domain.source.interactor.GetRemoteManga
 import tachiyomi.domain.source.service.SourceManager
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.seconds
 import eu.kanade.tachiyomi.source.model.Filter as SourceModelFilter
 
 @AssistedInject
 class BrowseSourceViewModel(
     @Assisted private val sourceId: Long,
     @Assisted listingQuery: String?,
+    @AppCoroutineScope private val appScope: CoroutineScope,
     private val sourceManager: SourceManager,
     sourcePreferences: SourcePreferences,
     private val libraryPreferences: LibraryPreferences,
@@ -73,8 +78,8 @@ class BrowseSourceViewModel(
     private val setMangaCategories: SetMangaCategories,
     private val setMangaDefaultChapterFlags: SetMangaDefaultChapterFlags,
     private val getManga: GetManga,
-    private val getChaptersByMangaId: GetChaptersByMangaId,
     private val updateManga: UpdateManga,
+    private val getChaptersByMangaId: GetChaptersByMangaId,
     private val addTracks: AddTracks,
     getIncognitoState: GetIncognitoState,
 ) : ViewModel() {
@@ -94,7 +99,7 @@ class BrowseSourceViewModel(
     private val source: Source? get() = state.value.source
 
     init {
-        viewModelScope.launchIO {
+        viewModelScope.launch(Dispatchers.IO) {
             val source = sourceManager.getOrStub(sourceId)
 
             state.update {
@@ -125,12 +130,8 @@ class BrowseSourceViewModel(
      */
     private val hideInLibraryItems = sourcePreferences.hideInLibraryItems.get()
 
-    /**
-     * Cache of chapter-count lookups per manga id, so the per-item query only runs
-     * once per unique manga per screen session instead of on every paging recomposition.
-     */
+    /** Cache de "0 capitulos" por manga, para no repetir la query en cada recomposicion. */
     private val hasNoChaptersCache = mutableMapOf<Long, Boolean>()
-
     val mangaPagerFlowFlow = state.map { it.source to it.listing }
         .filter { (source, _) -> source != null }
         .map { (_, listing) -> listing }
@@ -150,12 +151,13 @@ class BrowseSourceViewModel(
                             } else {
                                 false
                             }
-                            BrowseMangaItem(
-                                manga = resolved,
-                                hasNoChapters = hasNoChapters,
-                            )
+                            BrowseMangaItem(manga = resolved, hasNoChapters = hasNoChapters)
                         }
-                        .stateIn(viewModelScope)
+                        .stateIn(
+                            viewModelScope,
+                            SharingStarted.WhileSubscribed(5.seconds),
+                            BrowseMangaItem(manga = manga, hasNoChapters = false),
+                        )
                 }
                     .filter { !hideInLibraryItems || !it.value.manga.favorite }
             }
@@ -254,23 +256,17 @@ class BrowseSourceViewModel(
      * @param manga the manga to update.
      */
     fun changeMangaFavorite(manga: Manga) {
-        viewModelScope.launch {
-            var new = manga.copy(
-                favorite = !manga.favorite,
-                dateAdded = when (manga.favorite) {
-                    true -> 0
-                    false -> Clock.System.now().toEpochMilliseconds()
-                },
-            )
-
-            if (!new.favorite) {
-                new = new.removeCovers(coverCache)
+        appScope.launch {
+            val update = if (manga.favorite) {
+                manga.removeCovers(coverCache)
+                MangaUpdate(manga.id) { favoriteAt = null }
             } else {
                 setMangaDefaultChapterFlags.await(manga)
                 addTracks.bindEnhancedTrackers(manga, sourceManager.getOrStub(manga.source))
+                MangaUpdate(manga.id) { favoriteAt = Clock.System.now() }
             }
 
-            updateManga.await(new.toMangaUpdate())
+            updateManga.await(update)
         }
     }
 
@@ -330,7 +326,7 @@ class BrowseSourceViewModel(
     }
 
     fun moveMangaToCategories(manga: Manga, categoryIds: List<Long>) {
-        viewModelScope.launchIO {
+        viewModelScope.launch(Dispatchers.IO) {
             setMangaCategories.await(
                 mangaId = manga.id,
                 categoryIds = categoryIds.toList(),
@@ -393,9 +389,8 @@ class BrowseSourceViewModel(
 }
 
 /**
- * Item of a browse source grid/list: the resolved manga plus whether it is known locally
- * to have zero chapters (only known for manga already in the local DB; unknown for
- * brand-new search results, which show no indicator until fetched once).
+ * Item de la lista de una fuente: el manga resuelto y si ya sabemos que no tiene capitulos
+ * (solo para mangas que ya existen en la BD local; los resultados nuevos no muestran indicador).
  */
 @Immutable
 data class BrowseMangaItem(
