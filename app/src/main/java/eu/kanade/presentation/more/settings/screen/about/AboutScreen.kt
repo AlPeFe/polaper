@@ -233,8 +233,10 @@ object AboutScreen : Screen() {
 
     fun getVersionName(withBuildDate: Boolean): String {
         return when {
+            // Polaper: los APKs publicados son builds debug, asi que el upstream enseñaba
+            // solo "Debug <sha>" sin version. Mostramos siempre la version de Polaper.
             BuildConfig.DEBUG -> {
-                "Debug ${BuildConfig.COMMIT_SHA}".let {
+                "Polaper v${BuildConfig.VERSION_NAME.substringBefore("-")} (debug ${BuildConfig.COMMIT_SHA})".let {
                     if (withBuildDate) {
                         "$it (${getFormattedBuildTime()})"
                     } else {

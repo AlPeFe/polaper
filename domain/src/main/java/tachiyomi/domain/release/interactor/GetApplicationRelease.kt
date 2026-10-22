@@ -30,23 +30,31 @@ class GetApplicationRelease(
         versionName: String,
         versionTag: String,
     ): Boolean {
-        // Removes prefixes like "r" or "v"
-        val newVersion = versionTag.replace("[^\\d.]".toRegex(), "")
         return if (isNightly) {
             // Nightly builds: based on releases in "mihonapp/mihon-preview" repo
             // tagged as something like "r1234"
-            newVersion.toInt() > commitCount
+            // Polaper: los builds debug añaden "-<commitCount>" al versionName; sin quitarlo
+            // el sufijo numerico se colaba en la comparacion y ocultaba updates.
+            val newVersion = versionTag.substringBefore("-").replace("[^\\d.]".toRegex(), "")
+            (newVersion.toIntOrNull() ?: 0) > commitCount
         } else {
-            // Release builds: based on releases in "mihonapp/mihon" repo
-            // tagged as something like "v0.1.2"
-            val oldVersion = versionName.replace("[^\\d.]".toRegex(), "")
+            // Release builds: based on releases in "AlPeFe/polaper" repo
+            // tagged as something like "v0.1.2-polaper"
+            // Polaper: quitamos el sufijo "-<commitCount>" de los builds debug antes de
+            // comparar; si no, "0.2.0-7979" se leia como 0.2.7979 y un 0.2.1 nunca se veia.
+            val newVersion = versionTag.substringBefore("-").replace("[^\\d.]".toRegex(), "")
+            val oldVersion = versionName.substringBefore("-").replace("[^\\d.]".toRegex(), "")
 
-            val newSemVer = newVersion.split(".").map { it.toInt() }
-            val oldSemVer = oldVersion.split(".").map { it.toInt() }
+            val newSemVer = newVersion.split(".").mapNotNull { it.toIntOrNull() }
+            val oldSemVer = oldVersion.split(".").mapNotNull { it.toIntOrNull() }
 
-            oldSemVer.mapIndexed { index, i ->
-                if (newSemVer[index] > i) {
-                    return true
+            // Comparacion componente a componente (la de upstream solo miraba si el nuevo
+            // era mayor en algun indice y fallaba al comparar distinto numero de partes).
+            for (index in 0 until maxOf(newSemVer.size, oldSemVer.size)) {
+                val newPart = newSemVer.getOrElse(index) { 0 }
+                val oldPart = oldSemVer.getOrElse(index) { 0 }
+                if (newPart != oldPart) {
+                    return newPart > oldPart
                 }
             }
 
