@@ -64,13 +64,23 @@ jobs:
           path: app/build/reports/tests/testDebugUnitTest
 
       - name: Build app
+        # En el fork app.polaper no existe en google-services.json (Firebase es de
+        # mihon), asi que la variante release falla en processReleaseGoogleServices.
+        # Se construye la variante foss, que es la que se publica.
+        if: github.repository == 'mihonapp/mihon'
         run: ./gradlew assembleRelease -Pdist=ci
+
+      - name: "Build app (fork: variante foss)"
+        if: github.repository != 'mihonapp/mihon'
+        run: ./gradlew assembleFoss -Pdist=foss
 
       - name: Upload APK
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: arm64-v8a-${{ github.sha }}
-          path: app/build/outputs/apk/release/app-arm64-v8a-release.apk
+          path: |
+            app/build/outputs/apk/release/app-arm64-v8a-release.apk
+            app/build/outputs/apk/foss/*.apk
 
       - name: Upload mapping
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
