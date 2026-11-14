@@ -218,7 +218,11 @@ abstract class SearchViewModel(
     data class State(
         val from: Manga? = null,
         val searchQuery: String? = null,
-        val sourceFilter: SourceFilter = SourceFilter.PinnedOnly,
+        // La búsqueda global busca SIEMPRE en todas las fuentes activadas: la UI no
+        // expone el filtro "solo fijadas" desde `dee2e83ac`. Si esto vuelve a
+        // PinnedOnly (pasó al resolver el merge de v0.21.2), con cero fuentes
+        // fijadas la búsqueda global no devuelve NADA.
+        val sourceFilter: SourceFilter = SourceFilter.All,
         val onlyShowHasResults: Boolean = false,
         val items: Map<Source, SearchItemResult> = mapOf(),
         val dialog: Dialog? = null,
