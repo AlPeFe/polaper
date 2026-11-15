@@ -37,7 +37,6 @@ fun MoreScreen(
     onClickSettings: () -> Unit,
     onClickAbout: () -> Unit,
 ) {
-
     Scaffold { contentPadding ->
         ScrollbarLazyColumn(contentPadding = contentPadding) {
             item {
