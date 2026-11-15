@@ -37,8 +37,8 @@ android {
     defaultConfig {
         applicationId = "app.polaper"
 
-        versionCode = 111
-        versionName = "0.2.1"
+        versionCode = 112
+        versionName = "0.2.2"
 
         buildConfigField("boolean", "TELEMETRY_INCLUDED", "${Config.includeTelemetry}")
         buildConfigField("boolean", "UPDATER_ENABLED", "${Config.enableUpdater}")

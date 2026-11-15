@@ -69,15 +69,24 @@ fi
 
 echo "== Etiqueta libre =="
 tag="v${decl_name}-polaper"
-if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
-    bad "el tag $tag ya existe localmente"
+if [ "${POLAPER_ALLOW_EXISTING_TAG:-0}" = "1" ]; then
+    # En CI la release se dispara con el tag ya empujado: se exige que apunte a HEAD.
+    if git rev-parse -q --verify "refs/tags/$tag" >/dev/null && [ "$(git rev-list -n1 "$tag")" = "$(git rev-parse HEAD)" ]; then
+        ok "tag $tag existe y apunta a HEAD (modo CI)"
+    else
+        bad "modo CI: el tag $tag no existe o no apunta a HEAD"
+    fi
 else
-    ok "tag $tag disponible"
-fi
-if git ls-remote --tags --exit-code origin "$tag" >/dev/null 2>&1; then
-    bad "el tag $tag ya existe en origin"
-else
-    ok "tag $tag libre en origin"
+    if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+        bad "el tag $tag ya existe localmente"
+    else
+        ok "tag $tag disponible"
+    fi
+    if git ls-remote --tags --exit-code origin "$tag" >/dev/null 2>&1; then
+        bad "el tag $tag ya existe en origin"
+    else
+        ok "tag $tag libre en origin"
+    fi
 fi
 
 echo

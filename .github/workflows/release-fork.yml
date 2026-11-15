@@ -1,0 +1,77 @@
+name: Release (fork Polaper)
+
+# Release propio del fork: compila el APK universal DEBUG (que es el que se
+# publica en AlPeFe/polaper) y lo adjunta a la release del tag.
+# No usa los secrets de mihon: la firma sale de `ci/polaper-signing.p12`
+# (clave de distribución estable, para que las actualizaciones se instalen
+# encima de la versión anterior sin tener que desinstalar).
+
+on:
+  push:
+    tags:
+      - 'v*-polaper'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag ya existente (ej. v0.2.2-polaper)'
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  KEYSTORE_PASSWORD: polaper-release-2026
+
+jobs:
+  release:
+    if: github.repository != 'mihonapp/mihon'
+    name: Build universal debug APK + release
+    runs-on: 'ubuntu-26.04'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # COMMIT_COUNT sale de git rev-list --count
+
+      - name: Set up JDK
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          java-version-file: .github/.java-version
+          distribution: temurin
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+
+      - name: Keystore de distribución del fork
+        run: |
+          cat > keystore.properties <<EOF
+          storeFile=../ci/polaper-signing.p12
+          storePassword=${KEYSTORE_PASSWORD}
+          keyAlias=polaper
+          keyPassword=${KEYSTORE_PASSWORD}
+          EOF
+
+      - name: Build universal debug APK
+        run: ./gradlew :app:assembleDebug -Penable-updater
+
+      - name: Verify APK (script del repo)
+        env:
+          POLAPER_ALLOW_EXISTING_TAG: '1' # el tag ya existe: es el que disparó el workflow
+        run: bash scripts/release_verify.sh
+
+      - name: Create/update GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          APK=app/build/outputs/apk/debug/app-universal-debug.apk
+          test -f "$APK"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$APK" --clobber
+          else
+            gh release create "$TAG" "$APK" \
+              --title "Polaper ${TAG%-polaper}" \
+              --notes "Build automático desde ${GITHUB_SHA:0:7}. Base Mihon 0.21.3 + búsqueda global arreglada." \
+              --latest
+          fi
